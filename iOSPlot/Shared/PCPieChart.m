@@ -74,6 +74,7 @@
 		_titleFont = [UIFont boldSystemFontOfSize:10];
 		_percentageFont = [UIFont boldSystemFontOfSize:20];
 		_showArrow = YES;
+		_showLabels = YES;
 		_sameColorLabel = NO;
 	}
     return self;
@@ -195,6 +196,7 @@
 				CGSize optimumSize = [percentageText sizeWithFont:self.percentageFont constrainedToSize:CGSizeMake(max_text_width,100)];
 				CGRect percFrame = CGRectMake(5, left_label_y,  max_text_width, optimumSize.height);
         
+    if (_showLabels) {
         if (self.hasOutline) {
           CGContextSaveGState(ctx);
           
@@ -209,6 +211,7 @@
         } else {
           [percentageText drawInRect:percFrame withFont:self.percentageFont lineBreakMode:NSLineBreakByWordWrapping alignment:NSTextAlignmentRight];
         }
+    }
 				
 				if (self.showArrow)
 				{
@@ -311,13 +314,15 @@
 					}
 					
 				}
-				// display title on the left
-				CGContextSetRGBFillColor(ctx, 0.4f, 0.4f, 0.4f, 1.0f);
-				left_label_y += optimumSize.height - 4;
-				optimumSize = [component.title sizeWithFont:self.titleFont constrainedToSize:CGSizeMake(max_text_width,100)];
-				CGRect titleFrame = CGRectMake(5, left_label_y, max_text_width, optimumSize.height);
-				[component.title drawInRect:titleFrame withFont:self.titleFont lineBreakMode:NSLineBreakByWordWrapping alignment:NSTextAlignmentRight];
-				left_label_y += optimumSize.height + 10;
+                if(_showLabels) {
+                    // display title on the left
+                    CGContextSetRGBFillColor(ctx, 0.4f, 0.4f, 0.4f, 1.0f);
+                    left_label_y += optimumSize.height - 4;
+                    optimumSize = [component.title sizeWithFont:self.titleFont constrainedToSize:CGSizeMake(max_text_width,100)];
+                    CGRect titleFrame = CGRectMake(5, left_label_y, max_text_width, optimumSize.height);
+                    [component.title drawInRect:titleFrame withFont:self.titleFont lineBreakMode:NSLineBreakByWordWrapping alignment:NSTextAlignmentRight];
+                    left_label_y += optimumSize.height + 10;
+                }
 			}
 			else 
 			{
@@ -343,6 +348,7 @@
 				CGSize optimumSize = [percentageText sizeWithFont:self.percentageFont constrainedToSize:CGSizeMake(max_text_width,100)];
 				CGRect percFrame = CGRectMake(text_x, right_label_y, optimumSize.width, optimumSize.height);
         
+    if(_showLabels) {
         if (self.hasOutline) {
           CGContextSaveGState(ctx);
           
@@ -357,6 +363,7 @@
         } else {
           [percentageText drawInRect:percFrame withFont:self.percentageFont];
         }
+    }
 				
 				if (self.showArrow)
 				{
@@ -446,11 +453,13 @@
 				}
 				
 				// display title on the left
-				CGContextSetRGBFillColor(ctx, 0.4f, 0.4f, 0.4f, 1.0f);
-				right_label_y += optimumSize.height - 4;
-				optimumSize = [component.title sizeWithFont:self.titleFont constrainedToSize:CGSizeMake(max_text_width,100)];
-				CGRect titleFrame = CGRectMake(text_x, right_label_y, optimumSize.width, optimumSize.height);
-				[component.title drawInRect:titleFrame withFont:self.titleFont];
+                if(_showLabels) {
+                    CGContextSetRGBFillColor(ctx, 0.4f, 0.4f, 0.4f, 1.0f);
+                    right_label_y += optimumSize.height - 4;
+                    optimumSize = [component.title sizeWithFont:self.titleFont constrainedToSize:CGSizeMake(max_text_width,100)];
+                    CGRect titleFrame = CGRectMake(text_x, right_label_y, optimumSize.width, optimumSize.height);
+                    [component.title drawInRect:titleFrame withFont:self.titleFont];
+                }
 				right_label_y += optimumSize.height + 10;
 			}
 			nextStartDeg = endDeg;
